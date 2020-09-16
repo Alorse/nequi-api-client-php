@@ -5,9 +5,9 @@
  */
 	include 'clientAPI.php';
 
-	echo "Test consumo API Nequi"."<br>"."<br>";
+	// echo "Test consumo API Nequi"."<br>"."<br>";
 
-	$validateClientResponse = validateClient("12345", "3195414070", "0");
+	$validateClientResponse = validateClient("12345", "1053780555", "10000");
 
 	echo json_encode($validateClientResponse);
 

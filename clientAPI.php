@@ -5,14 +5,14 @@
  */
 include 'awsSigner.php';
 
-$host = "a7zgalw2j0.execute-api.us-east-1.amazonaws.com";  
-$channel = 'MF-001';
+$host = "api.sandbox.nequi.com";  
+$channel = 'PQR03-C001';
 
 /**
  * Encapsula el consumo del servicio de validacion de cliente del API y retorna la respuesta del servicio
  */
 function validateClient($clientId, $phoneNumber, $value) {
-  $servicePath = "/qa/-services-clientservice-validateclient";
+  $servicePath = "/payments/v1/-services-paymentservice-generatecodeqr";
   $body = getBodyValidateClient($GLOBALS['channel'], $clientId, $phoneNumber, $value);
   $response = makeSignedRequest($GLOBALS['host'], $servicePath, 'POST', $body);  
   if(json_decode($response) == null){
@@ -32,17 +32,25 @@ function getBodyValidateClient($channel, $clientId, $phoneNumber, $value){
         "Channel" => $channel,
         "RequestDate" => gmdate("Y-m-d\TH:i:s\\Z"),
         "MessageID" => $messageId,
-        "ClientID" => $clientId),
+        "ClientID" => $clientId,
+        "Destination"=> [
+          "ServiceName"=> "PaymentsService",
+          "ServiceOperation"=> "generateCodeQR",
+          "ServiceRegion"=> "C001",
+          "ServiceVersion"=> "1.0.0"
+        ]
+      ),
       "RequestBody"  => array (
         "any" => array (
-          "validateClientRQ" => array (
-            "phoneNumber" => $phoneNumber,
-            "value" => $value
+          "generateCodeQRRQ" => array (
+            "code" => "NIT_2",
+            "value" => $value,
+            "reference1" => "",
+            "reference2" => "",
+            "reference3" => "",
             )
         )
       )
     )
   );
 }
-
-?>
